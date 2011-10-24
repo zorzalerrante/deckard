@@ -1,0 +1,30 @@
+Python powered search engine. We use:
+
+- Whoosh
+- justtext
+- WIRE
+- Django
+
+Requirements
+
+swig
+
+
+How to install
+
+1. 
+Make sure you have installed and working WIRE 0.22
+http://www.cwr.cl/projects/WIRE
+
+2. 
+Build wire-swig. You will have to edit setup.py and change the home_dir variable to the folder that contains WIRE:
+home_dir = "/home/egraells/resources"
+wire_dir = home_dir + "/WIRE-0.22"
+
+cd wire_swig
+python setup.py build
+
+This will create the python bindings for WIRE. The generated .so file will be in a subfolder, you will have to move it into the current folder. Example:
+mv build/lib.linux-i686-2.7/_Wire.so .
+
+
