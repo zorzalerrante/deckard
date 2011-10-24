@@ -1,0 +1,107 @@
+wire-swig
+
+Copyright 2006 NOKUBI Takatsugu <knok@daionet.gr.jp>
+
+1. What is this
+
+The software provides libwire binding for some languages. libwire is a
+part of WIRE, an implementation of Web crawler. The software forcuses
+on retrieve information from WIRE's storage and index.
+
+2. Requirements
+
+WIRE <http://www.cwr.cl/projects/WIRE/>
+  * tested under WIRE 0.11
+SWIG <http://www.swig.org/>
+  * tested under SWIG 1.3.24
+
+and... Perl, Ruby, Python, or other language supported by SWIG.
+The software is tested on Ruby 1.8.2.
+
+3. How to install
+
+The software contains extconf.rb, the build/install script for Ruby,
+and setup.py for Python, so the section describes about Ruby and
+Python.
+
+3.1 Ruby
+
+* Rename config.h in WIRE to config-wire.h. Because it conflicts
+  Ruby's config.h filename.
+
+* Run extconf.rb. It supports the following options:
+  --with-wire-include
+    specify locationthe directory of WIRE's inlude files
+  --with-wire-lib
+    specify the directory of libwire file
+  --with-wireconfig-include
+    specify the directory of config-wire.h file
+  --with-univchardet-include
+    specify the directory of universalchardet related header files
+
+  Example:
+  $ ruby extconf.rb --with-wire-include=../WIRE-0.11/lib \
+    --with-wireconfig-include=../WIRE-0.11 \
+    --with-wire-lib=/usr/local/wire/lib \
+    --with-univchardet-include=../WIRE-0.11/universalchardet
+
+* Do make, make install
+
+3.1 Python
+
+* Rename config.h in WIRE to config-wire.h.
+
+* Run setup.py with build_ext command.
+
+  Example:
+  $ python setup.rb --with-wire-include=../WIRE-0.11/lib \
+    --with-wireconfig-include=../WIRE-0.11 \
+    --with-wire-lib=/usr/local/wire/lib \
+    --with-univchardet-include=../WIRE-0.11/universalchardet
+
+* Do make, make install
+
+4. How to use
+
+Here is an example:
+
+require 'Wire'
+ENV['WIRE_CONF'] = '/path/to/wire.conf'
+Wire::MetaIndex.loadConfig()
+idxdir = '/path/to/wire/index'
+midx = Wire::MetaIndex.new(idxdir)
+midx = Wire::UrlIndex.new(idxdir)
+midx = Wire::Storage.new(idxdir)
+1.upto(midx.count_doc) do |i|
+  d = midx.doc_retrieve(i)
+  next unless d.mime_type == Wire::MIME_TEXT_HTML
+  print uidx.url_by_docid(i)
+  print storage.fetch_byid(i)
+end
+
+5. Notes
+
+WIRE index is completely denpends on configuration, so you must read
+configuration file by Wire::MetaIndex.loadConfig().
+
+Some enums are imported form WIRE's header into wire-enum.h.
+
+6. Thanks
+
+Special thanks to:
+  Millenium Centre for Web Research, for WIRE development
+  University of Chicago, for SWIG development
+  Yukihiro Matsumoto, for Ruby development
+  and many Free/Libre/OpenSource Software developers.
+
+7. License
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation; either version 2, or (at your option) any
+later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
