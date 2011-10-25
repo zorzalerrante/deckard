@@ -1,23 +1,24 @@
-Python powered search engine. We use:
+Python mash-up to build a web search engine using the Whoosh Search Engine and WIRE, a web crawler. The goal is to have a quick and easy to setup search engine in order to make research on search interfaces.
 
-- Whoosh
-- justtext
+Dependencies
+
 - WIRE
-- Django
+- Whoosh
+- Python 2.7 (not tested on earlier versions). 
+- swig
+- libxml2
 
-Requirements
+Included in the package
 
-swig
-
+- Justext http://code.google.com/p/justext/
+- BeautifulSoup
 
 How to install
 
-1. 
-Make sure you have installed and working WIRE 0.22
+1. Make sure you have installed and working WIRE 0.22
 http://www.cwr.cl/projects/WIRE
 
-2. 
-Build wire-swig. You will have to edit setup.py and change the home_dir variable to the folder that contains WIRE:
+2. Build wire-swig. You will have to edit setup.py and change the home_dir variable to the folder that contains WIRE:
 home_dir = "/home/egraells/resources"
 wire_dir = home_dir + "/WIRE-0.22"
 
@@ -27,4 +28,14 @@ python setup.py build
 This will create the python bindings for WIRE. The generated .so file will be in a subfolder, you will have to move it into the current folder. Example:
 mv build/lib.linux-i686-2.7/_Wire.so .
 
+Usage
 
+You can use the manager script to control the behavior. Here are some incomplete examples (this assumes that WIRE is properly configured):
+
+Crawling and Indexing
+python manager.py --action start --seeds seeds_2011_10_25.txt
+python manager.py --action crawl --steps 10
+python manager.py --action build-index --indexdir search_index/ --indexname test
+
+Search
+python search.py --indexdir search_index/ --indexname test --query graells
